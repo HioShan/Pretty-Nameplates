@@ -2,7 +2,7 @@ local addonName, ns = ...
 local locale = GetLocale()
 
 local L = {
-    Title = "Pretty Nameplates v1.3.2", -- Обновлено
+    Title = "Pretty Nameplates v1.3.3", -- Обновлено
     Author = "Author: Baime / Metkiymuu",
 
     TabGeneral = "General",
@@ -38,6 +38,7 @@ local L = {
     PetColor = "Pet Color",
     ShowImportant = "Show Saves",
     ImportantSize = "Save Size",
+    ShowMyDebuffsOnly = "Show My Debuffs Only",
 
     CPHeader = "Combo Points",
     CPSize = "Size",
@@ -85,6 +86,7 @@ if locale == "ruRU" then
     L.PetColor = "Цвет Питомцев"
     L.ShowImportant = "Отслеживать Сейвы"
     L.ImportantSize = "Размер Сейвов"
+    L.ShowMyDebuffsOnly = "Только мои дебаффы"
 
     L.CPHeader = "Комбо Поинты"
     L.CPSize = "Размер"
@@ -209,6 +211,7 @@ ns.defaults = {
     showCastbar = true,
     showAuras = true,
     auraSize = 18,
+    showMyDebuffsOnly = true,
     zoomIcons = true,
     compactTotems = true,
     showPets = true,
