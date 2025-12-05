@@ -20,10 +20,12 @@ local L = {
     Scale = "Scale",
     Texture = "Texture",
     HpColor = "PvE HP Color",
+    HpBgColor = "HP Background Color",
     CastColor = "Castbar Color",
     TankMode = "Tank Mode",
     ColorNeutral = "Color Neutral",
     NonTargetAlpha = "Alpha",
+    HpBgAlpha = "HP Background Alpha",
 
     Font = "Font",
     FontSize = "Font Size",
@@ -68,10 +70,12 @@ if locale == "ruRU" then
     L.Scale = "Масштаб"
     L.Texture = "Текстура"
     L.HpColor = "Цвет ХП (PvE)"
+    L.HpBgColor = "Цвет фона ХП"
     L.CastColor = "Цвет Кастбара"
     L.TankMode = "Танк режим"
     L.ColorNeutral = "Красить нейтральных"
     L.NonTargetAlpha = "Прозрачность остальных"
+    L.HpBgAlpha = "Прозрачность фона ХП"
 
     L.Font = "Шрифт"
     L.FontSize = "Размер шрифта"
@@ -199,6 +203,8 @@ ns.defaults = {
     scale = 1,
     texture = "Interface\\Buttons\\WHITE8X8",
     hpColor = { r = 1, g = 0.2, b = 0.2 },
+    hpBgColor = { r = 0, g = 0, b = 0, a = 0.8 },
+    hpBgAlpha = 80,
     castColor = { r = 1, g = 0.8, b = 0 },
     tankMode = false,
     colorNeutral = true,

@@ -152,6 +152,11 @@ local function CreatePreviewFrame(parent)
 
         hp:SetStatusBarColor(db.hpColor.r, db.hpColor.g, db.hpColor.b)
         cb:SetStatusBarColor(db.castColor.r, db.castColor.g, db.castColor.b)
+        
+        -- Update background color
+        local bgColor = db.hpBgColor or ns.defaults.hpBgColor
+        local alpha = (db.hpBgAlpha or ns.defaults.hpBgAlpha or 80) / 100
+        hpBg:SetTexture(bgColor.r, bgColor.g, bgColor.b, alpha)
 
         cb:ClearAllPoints()
         cb:SetPoint("TOP", hp, "BOTTOM", 0, -2)
@@ -400,7 +405,10 @@ function ns:ToggleGUI()
             ColorPickerFrame:SetColorRGB(c.r, c.g, c.b)
             ColorPickerFrame.func = function()
                 local r, g, b = ColorPickerFrame:GetColorRGB()
-                PrettyNameplatesDB[key] = { r = r, g = g, b = b }
+                local newColor = { r = r, g = g, b = b }
+                -- Preserve alpha if it exists
+                if c.a then newColor.a = c.a end
+                PrettyNameplatesDB[key] = newColor
                 b.bg:SetTexture(r, g, b, 1)
                 UpdateAll()
                 ns.UpdatePreview()
@@ -482,10 +490,33 @@ function ns:ToggleGUI()
     AddSlide(t2, L.Scale, "scale", 0.5, 2.5, 240, -60, true)
     AddDropdown(t2, L.Texture, "texture", ns.Textures, 0, -110)
     AddColor(t2, L.HpColor, "hpColor", 20, -160)
-    AddColor(t2, L.CastColor, "castColor", 240, -160)
-    AddCheck(t2, L.TankMode, "tankMode", 20, -190)
-    AddCheck(t2, L.ColorNeutral, "colorNeutral", 240, -190)
-    AddSlide(t2, L.NonTargetAlpha, "nonTargetAlpha", 0.2, 1, 20, -230, true)
+    AddColor(t2, L.HpBgColor, "hpBgColor", 240, -160)
+    AddColor(t2, L.CastColor, "castColor", 20, -200)
+    local hpBgAlphaSlider = CreateFrame("Slider", "PnpGuiSldhpBgAlpha", t2, "OptionsSliderTemplate")
+    hpBgAlphaSlider:SetPoint("TOPLEFT", 240, -200)
+    hpBgAlphaSlider:SetMinMaxValues(0, 100)
+    hpBgAlphaSlider:SetWidth(180)
+    hpBgAlphaSlider:SetValueStep(1)
+    _G[hpBgAlphaSlider:GetName() .. "Text"]:SetText(L.HpBgAlpha)
+    _G[hpBgAlphaSlider:GetName() .. "Low"]:SetText("0")
+    _G[hpBgAlphaSlider:GetName() .. "High"]:SetText("100")
+    hpBgAlphaSlider:SetValue(PrettyNameplatesDB.hpBgAlpha or 80)
+    _G[hpBgAlphaSlider:GetName() .. "Text"]:SetText(L.HpBgAlpha .. ": " .. (PrettyNameplatesDB.hpBgAlpha or 80) .. "%")
+    hpBgAlphaSlider:SetScript("OnValueChanged", function(self, v)
+        v = math.floor(v)
+        PrettyNameplatesDB.hpBgAlpha = v
+        UpdateAll()
+        ns.UpdatePreview()
+        _G[self:GetName() .. "Text"]:SetText(L.HpBgAlpha .. ": " .. v .. "%")
+    end)
+    hpBgAlphaSlider:SetScript("OnShow", function(self)
+        local v = PrettyNameplatesDB.hpBgAlpha or 80
+        self:SetValue(v)
+        _G[self:GetName() .. "Text"]:SetText(L.HpBgAlpha .. ": " .. v .. "%")
+    end)
+    AddCheck(t2, L.TankMode, "tankMode", 20, -240)
+    AddCheck(t2, L.ColorNeutral, "colorNeutral", 240, -240)
+    AddSlide(t2, L.NonTargetAlpha, "nonTargetAlpha", 0.2, 1, 20, -280, true)
 
     -- TAB 3
     local t3 = CreateFrame("Frame", nil, content)
