@@ -93,6 +93,13 @@ function ns:UpdatePlateStyle(myPlate)
     local tex = db.texture or "Interface\\Buttons\\WHITE8X8"
     myPlate.hp:SetStatusBarTexture(tex)
 
+    -- Update background color
+    if myPlate.hpBg then
+        local bgColor = db.hpBgColor or ns.defaults.hpBgColor
+        local alpha = (db.hpBgAlpha or ns.defaults.hpBgAlpha or 80) / 100
+        myPlate.hpBg:SetTexture(bgColor.r, bgColor.g, bgColor.b, alpha)
+    end
+
     local font = db.font or "Fonts\\FRIZQT__.TTF"
     local outline = db.fontOutline or "OUTLINE"
     local fSize = db.fontSize or 10
@@ -212,7 +219,7 @@ function ns:CreatePlateFrame(parentFrame)
 
     local bg = hp:CreateTexture(nil, "BACKGROUND")
     bg:SetAllPoints(hp)
-    bg:SetTexture(0, 0, 0, 0.8)
+    myPlate.hpBg = bg
 
     local backdrop = CreateFrame("Frame", nil, hp)
     backdrop:SetPoint("TOPLEFT", -1, 1)
